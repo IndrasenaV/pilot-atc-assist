@@ -3,7 +3,7 @@ import { Typography, Button, Box, List, ListItem, ListItemText, ListItemIcon } f
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 
-const TowerCommunication = ({ aircraftCallSign, runway , departureAirport}) => {
+const BeforeDeparture = ({ aircraftCallSign, runway , departureAirport}) => {
   const [completedItems, setCompletedItems] = useState([]);
   const [towerResponse, setTowerResponse] = useState(null);
 
@@ -84,4 +84,4 @@ const TowerCommunication = ({ aircraftCallSign, runway , departureAirport}) => {
   );
 };
 
-export default TowerCommunication;
+export default BeforeDeparture;

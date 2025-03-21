@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography } from "@mui/material";
 
-const Departure = ({ callSign, altitude }) => {
+const Climb = ({ callSign, altitude }) => {
   return (
     <>
       <h2>Departure</h2>
@@ -12,4 +12,4 @@ const Departure = ({ callSign, altitude }) => {
   );
 };
 
-export default Departure;
+export default Climb;

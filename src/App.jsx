@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { AppBar, Toolbar, Typography, Container, Button, Box } from "@mui/material";
+import { AppBar, Toolbar, Typography, Container, Button, Box, Drawer, IconButton, MenuItem } from "@mui/material";
+import MenuIcon from '@mui/icons-material/Menu';
 import FlightSetup from "./components/FlightSetup";
 import TaxiClearance from "./components/TaxiClearance";
-import TowerCommunication from "./components/TowerCommunication";
-import Departure from "./components/Departure";
-import PhoneticText from "./components/PhoneticText";
+import BeforeDeparture from "./components/BeforeDeparture";
+import Climb from "./components/Climb";
 
 function App() {
   const [aircraft, setAircraft] = useState(null);
@@ -16,6 +16,8 @@ function App() {
   const [atisCode, setAtisCode] = useState("");
   const [currentStep, setCurrentStep] = useState(0);
   const [aircraftLocation, setAircraftLocation] = useState("");
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [selectedPhase, setSelectedPhase] = useState("Flight Setup");
 
   const steps = [
     {
@@ -46,7 +48,7 @@ function App() {
     },
     {
       component: (
-        <TowerCommunication 
+        <BeforeDeparture 
           callSign={aircraft?.callSign} 
           runway={runway}
           departureAirport={departureAirport}
@@ -55,7 +57,7 @@ function App() {
     },
     {
       component: (
-        <Departure 
+        <Climb 
           callSign={aircraft?.callSign} 
           altitude={altitude}
           departureAirport={departureAirport}
@@ -73,18 +75,56 @@ function App() {
     setCurrentStep((prev) => Math.max(prev - 1, 0));
   };
 
+  const toggleDrawer = (open) => () => {
+    setDrawerOpen(open);
+  };
+
+  const handlePhaseSelect = (phase) => {
+    setSelectedPhase(phase);
+    setDrawerOpen(false);
+    
+    const phaseToStepMap = {
+      "Flight Setup": 0,
+      "Taxi": 1,
+      "Before Departure": 2,
+      "Climb": 3,
+      "Cruise": 4,
+      "Approach": 5,
+      "Traffic Pattern": 6,
+      "Landing": 7,
+      "After Landing": 8
+    };
+
+    setCurrentStep(phaseToStepMap[phase] || 0);
+  };
+
   return (
     <>
       <AppBar position="static">
         <Toolbar>
+          <IconButton edge="start" color="inherit" onClick={toggleDrawer(true)}>
+            <MenuIcon />
+          </IconButton>
           <Typography variant="h6">Pilot ATC Assistant</Typography>
         </Toolbar>
       </AppBar>
+      <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
+        <Box
+          sx={{ width: 250 }}
+          role="presentation"
+          onClick={toggleDrawer(false)}
+          onKeyDown={toggleDrawer(false)}
+        >
+          {["Flight Setup", "Taxi", "Before Departure", "Climb", "Cruise", "Approach", "Traffic Pattern", "Landing", "After Landing"].map((phase) => (
+            <MenuItem key={phase} onClick={() => handlePhaseSelect(phase)}>
+              {phase}
+            </MenuItem>
+          ))}
+        </Box>
+      </Drawer>
       <Container>
-        {/* Only show the current step's component */}
         {steps[currentStep].component}
         
-        {/* Navigation buttons */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3, mb: 3 }}>
           <Button
             variant="contained"
