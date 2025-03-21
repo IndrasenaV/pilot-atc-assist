@@ -22,7 +22,7 @@ export default defineConfig({
             type: 'image/png',
           },
         ],
-        start_url: '/',
+        start_url: '/pilot-atc-assist/',
         display: 'standalone',
         theme_color: '#000000',
         background_color: '#ffffff',
