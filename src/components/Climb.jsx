@@ -18,9 +18,6 @@ const Climb = ({ callSign, altitude }) => {
 
   return (
     <>
-      <Typography>
-        "Departure, {callSign}, climbing to {altitude} feet."
-      </Typography>
       <Box>
         <Tabs value={value} onChange={handleChange}>
           <Tab label="Check List" />

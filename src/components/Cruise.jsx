@@ -22,7 +22,6 @@ const Cruise = () => {
             <li>Mixture: Lean for altitude</li>
             <li>Fuel: Check quantity and balance</li>
             <li>Navigation: Set and verify</li>
-            <li>Autopilot: Engage if applicable</li>
           </ul>
         </Box>
       )}

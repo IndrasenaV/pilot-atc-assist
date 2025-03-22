@@ -10,32 +10,43 @@ import Approach from "./components/Approach";
 import TrafficPattern from "./components/TrafficPattern";
 import Landing from "./components/Landing";
 import AfterLanding from "./components/AfterLanding";
+import BeforeDestination from "./components/BeforeDestination";
+import airports from './data/airports'; // Import airports
+import aircrafts from './data/aircrafts'; 
 
 function App() {
-  const [aircraft, setAircraft] = useState(null);
-  const [runway, setRunway] = useState("");
-  const [altitude, setAltitude] = useState("");
-  const [groundStation, setGroundStation] = useState("McKinney Ground");
-  const [departureAirport, setDepartureAirport] = useState(null);
-  const [arrivalAirport, setArrivalAirport] = useState("");
+  let airport = airports[0];
+  const [aircraft, setAircraft] = useState(aircrafts[0]);
+  const [departureRunway, setDepartureRunway] = useState(airport.runways[0]);
+  const [altitude, setAltitude] = useState(2000);
+  const [departureAirport, setDepartureAirport] = useState(airport);
+  const [arrivalAirport, setArrivalAirport] = useState(airport);
   const [atisCode, setAtisCode] = useState("");
   const [currentStep, setCurrentStep] = useState(0);
-  const [aircraftLocation, setAircraftLocation] = useState("");
+  const [aircraftLocation, setAircraftLocation] = useState(airport.aircraftLocations[0]);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedPhase, setSelectedPhase] = useState("Flight Setup");
+  const [distanceToAirport, setDistanceToAirport] = useState(14);
+  const [destinationFrequency, setDestinationFrequency] = useState("");
 
   const steps = [
     {
       component: (
         <FlightSetup 
           setAircraft={setAircraft}
-          setRunway={setRunway} 
+          aircraft={aircraft}
+          departureRunway={departureRunway} 
+          setDepartureRunway={setDepartureRunway}
           setAltitude={setAltitude}
-          setGroundStation={setGroundStation}
+          altitude={altitude}
           setDepartureAirport={setDepartureAirport}
+          departureAirport={departureAirport}
           setArrivalAirport={setArrivalAirport}
+          arrivalAirport={arrivalAirport}
           setAtisCode={setAtisCode}
+          atisCode={atisCode}
           setAircraftLocation={setAircraftLocation}
+          aircraftLocation={aircraftLocation}
         />
       )
     },
@@ -43,10 +54,10 @@ function App() {
       component: (
         <TaxiClearance 
           aircraftCallSign={aircraft?.callSign} 
-          groundStationCallSign={groundStation}
+          groundStationCallSign={aircraft?.groundStation}
           departureAirport={departureAirport}
           atisCode={atisCode}
-          runway={runway}
+          runway={departureRunway}
           aircraftLocation={aircraftLocation}
         />
       )
@@ -55,7 +66,7 @@ function App() {
       component: (
         <BeforeDeparture 
           callSign={aircraft?.callSign} 
-          runway={runway}
+          runway={departureRunway}
           departureAirport={departureAirport}
         />
       )
@@ -74,10 +85,18 @@ function App() {
       component: <Cruise />
     },
     {
-      component: <Approach />
+      component: (
+        <BeforeDestination 
+          distanceToAirport={distanceToAirport} 
+          destinationFrequency={destinationFrequency} 
+        />
+      )
     },
     {
       component: <TrafficPattern />
+    },
+    {
+      component: <Approach />
     },
     {
       component: <Landing />
@@ -104,10 +123,11 @@ function App() {
     "Before Departure": 2,
     "Climb": 3,
     "Cruise": 4,
-    "Approach": 5,
+    "Before Destination": 5,
     "Traffic Pattern": 6,
-    "Landing": 7,
-    "After Landing": 8
+    "Approach": 7,
+    "Landing": 8,
+    "After Landing": 9
   };
 
   const handlePhaseSelect = (phase) => {
@@ -133,14 +153,14 @@ function App() {
           onClick={toggleDrawer(false)}
           onKeyDown={toggleDrawer(false)}
         >
-          { ["Flight Setup", "Taxi Clearance", "Before Departure", "Climb", "Cruise", "Approach", "Traffic Pattern", "Landing", "After Landing"].map((phase) => (
+          { ["Flight Setup", "Taxi Clearance", "Before Departure", "Climb", "Cruise", "Before Destination", "Traffic Pattern","Approach",  "Landing", "After Landing"].map((phase) => (
             <MenuItem key={phase} onClick={() => handlePhaseSelect(phase)}>
               {phase}
             </MenuItem>
           ))}
         </Box>
       </Drawer>
-      <Container sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <Container sx={{ height: '100vh', width : '100%', display: 'flex', flexDirection: 'column' }}>
         {steps[currentStep].component}
         
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3, mb: 3 }}>
