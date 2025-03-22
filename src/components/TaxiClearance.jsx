@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Typography, Grid, Box, Tabs, Tab, Chip } from "@mui/material";
 import PhoneticText from "./PhoneticText";
+import CheckIcon from '@mui/icons-material/Check';
 
 const TaxiClearance = ({ aircraft, departureAirport, atisCode, runway, aircraftLocation }) => {
   const [taxiPath, setTaxiPath] = useState([]);
@@ -45,6 +46,10 @@ const TaxiClearance = ({ aircraft, departureAirport, atisCode, runway, aircraftL
     <Box>
       <Typography variant="h6">Check List</Typography>
       <ul>
+        <li>Make sure to set the transponder to VFR 1200 </li>
+        <li style={{ color: !atisCode ? 'red' : 'inherit' }}>
+          Current ATIS code is {atisCode || 'Not Set'}
+        </li>
         <li>Check if the radio is on ground frequency {departureAirport.frequencies.ground}</li>
         <li>Check for the lights</li>
         <li>Ask ATC for clearance</li>
@@ -74,10 +79,21 @@ const TaxiClearance = ({ aircraft, departureAirport, atisCode, runway, aircraftL
                   size="small"
                   sx={{
                     minWidth: '60px',
-                    backgroundColor: taxiPath.includes(route) ? '#4caf50' : undefined
+                    backgroundColor: taxiPath.includes(route) ? '#4caf50' : undefined,
+                    position: 'relative'
                   }}
                 >
                   {route}
+                  {taxiPath.includes(route) && (
+                    <CheckIcon 
+                      sx={{ 
+                        position: 'absolute', 
+                        top: 2, 
+                        right: 2, 
+                        color: 'white' 
+                      }} 
+                    />
+                  )}
                 </Button>
               </Grid>
             ))}

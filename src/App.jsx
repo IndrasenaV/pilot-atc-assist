@@ -64,7 +64,7 @@ function App() {
     {
       component: (
         <BeforeDeparture 
-          callSign={aircraft?.callSign} 
+        aircraft={aircraft} 
           runway={departureRunway}
           departureAirport={departureAirport}
         />
@@ -86,8 +86,8 @@ function App() {
     {
       component: (
         <BeforeDestination 
-          distanceToAirport={distanceToAirport} 
-          destinationFrequency={destinationFrequency} 
+        aircraft={aircraft} 
+        arrivalAirport={arrivalAirport}
         />
       )
     },
@@ -160,6 +160,7 @@ function App() {
           onClick={toggleDrawer(false)}
           onKeyDown={toggleDrawer(false)}
         >
+          <h4>Loopway</h4>
           { ["Flight Setup", "Taxi Clearance", "Before Departure", "Climb", "Cruise", "Before Destination", "Traffic Pattern","Approach",  "Landing", "After Landing"].map((phase) => (
             <MenuItem key={phase} onClick={() => handlePhaseSelect(phase)}>
               {phase}

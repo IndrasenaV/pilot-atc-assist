@@ -3,10 +3,11 @@ import { Typography, Button, Box, List, ListItem, ListItemText, ListItemIcon, Ta
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 
-const BeforeDeparture = ({ aircraftCallSign, runway , departureAirport}) => {
+const BeforeDeparture = ({ aircraft, runway , departureAirport}) => {
   const [completedItems, setCompletedItems] = useState([]);
   const [towerResponse, setTowerResponse] = useState(null);
   const [selectedTab, setSelectedTab] = useState(0);
+  const [selectedResponse, setSelectedResponse] = useState(null);
 
   const items = [
     `Set Tower Frequency (${departureAirport.frequencies.tower})`,
@@ -18,6 +19,7 @@ const BeforeDeparture = ({ aircraftCallSign, runway , departureAirport}) => {
   const handleTowerResponse = (response) => {
     setTowerResponse(response);
     setCompletedItems([...new Set([...completedItems, 0, 1, 2, 3])]);
+    setSelectedResponse(response);
   };
 
   return (
@@ -45,10 +47,10 @@ const BeforeDeparture = ({ aircraftCallSign, runway , departureAirport}) => {
 
       {selectedTab === 1 && (
         <>
-          {!towerResponse && (
+          { (
             <>
               <Typography variant="body1" sx={{ mb: 2, fontStyle: 'italic' }}>
-                "{departureAirport.tower}, {aircraftCallSign}, holding short of Runway {runway}, ready for departure."
+                "{departureAirport.tower}, {aircraft.callSign}, holding short of Runway {runway}, ready for departure."
               </Typography>
               
               <Typography variant="body1" sx={{ mb: 2 }}>
@@ -59,6 +61,7 @@ const BeforeDeparture = ({ aircraftCallSign, runway , departureAirport}) => {
                   variant="contained" 
                   color="success"
                   onClick={() => handleTowerResponse("cleared")}
+                  endIcon={selectedResponse === "cleared" ? <CheckCircleIcon /> : null}
                 >
                   Cleared for Takeoff
                 </Button>
@@ -66,6 +69,7 @@ const BeforeDeparture = ({ aircraftCallSign, runway , departureAirport}) => {
                   variant="contained" 
                   color="warning"
                   onClick={() => handleTowerResponse("hold")}
+                  endIcon={selectedResponse === "hold" ? <CheckCircleIcon /> : null}
                 >
                   Hold Short
                 </Button>
@@ -73,19 +77,16 @@ const BeforeDeparture = ({ aircraftCallSign, runway , departureAirport}) => {
             </>
           )}
 
+          <h4></h4>
+
           {towerResponse && (
             <Typography variant="body1" sx={{ fontStyle: 'italic' }}>
               {towerResponse === "cleared" ? (
-                `"${aircraftCallSign}, ${departureAirport.tower}, cleared for takeoff Runway ${runway}"`
+                `"${aircraft.callSign}, ${departureAirport.tower}, cleared for takeoff Runway ${runway}"`
               ) : (
-                `"${aircraftCallSign}, ${departureAirport.tower}, hold short Runway ${runway}"`
+                `"${aircraft.callSign}, ${departureAirport.tower}, hold short Runway ${runway}"`
               )}
-              <br />
-              <span style={{ marginTop: '8px', display: 'block' }}>
-                "{departureAirport.tower}, {aircraftCallSign}, {towerResponse === "cleared" ? 
-                  `cleared for takeoff Runway ${runway}, wilco` : 
-                  `holding short Runway ${runway}, wilco`}"
-              </span>
+             
             </Typography>
           )}
         </>
