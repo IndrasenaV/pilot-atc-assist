@@ -24,18 +24,16 @@ const FlightSetup = ({
 
   const handleDepartureAirportChange = (event) => {
     const selected = airports.find((ap) => ap.code === event.target.value);
-
     setDepartureAirport(selected); // Passing the entire airport object
   };
 
   const handleArrivalAirportChange = (event) => {
     const selected = airports.find((ap) => ap.code === event.target.value);
-
-    setArrivalAirport(selected.code);
+    setArrivalAirport(selected);
   };
 
   const handleAircraftChange = (event) => {
-    const selectedAc = aircraft.find(ac => ac.callSign === event.target.value);
+    const selectedAc = aircrafts.find(ac => ac.callSign === event.target.value);
     setAircraft(selectedAc);
   };
 

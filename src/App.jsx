@@ -53,8 +53,7 @@ function App() {
     {
       component: (
         <TaxiClearance 
-          aircraftCallSign={aircraft?.callSign} 
-          groundStationCallSign={aircraft?.groundStation}
+          aircraft={aircraft} 
           departureAirport={departureAirport}
           atisCode={atisCode}
           runway={departureRunway}
@@ -107,11 +106,19 @@ function App() {
   ];
 
   const handleNext = () => {
-    setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
+    setCurrentStep((prev) => {
+      const nextStep = Math.min(prev + 1, steps.length - 1);
+      setSelectedPhase(Object.keys(phaseToStepMap)[nextStep]);
+      return nextStep;
+    });
   };
 
   const handleBack = () => {
-    setCurrentStep((prev) => Math.max(prev - 1, 0));
+    setCurrentStep((prev) => {
+      const prevStep = Math.max(prev - 1, 0);
+      setSelectedPhase(Object.keys(phaseToStepMap)[prevStep]);
+      return prevStep;
+    });
   };
 
   const toggleDrawer = (open) => () => {

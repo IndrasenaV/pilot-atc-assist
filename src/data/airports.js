@@ -6,10 +6,10 @@ const airports = [
     tower: "McKinney Tower",
     isTowered: true,
     frequencies: {
-      tower: "118.55",
-      ground: "121.6",
-      atis: "120.175",
-      ctaf: "118.55" // Same as tower for towered airports
+      tower: "118.825",
+      ground: "121.875",
+      atis: "119.925",
+      ctaf: "118.825" // Same as tower for towered airports
     },
     runways: ["18", "36"],
     aircraftLocations: ["North side of airport", "South side of airport", "North side of runway 18", "South side of runway 18", "North side of runway 36", "South side of runway 36"],
@@ -18,6 +18,24 @@ const airports = [
       "B", "B1", "B2", "B3", "B4", "B5", "B6",
       "C", "C1", "C2", "C3",
       "D", "D1", "D2"
+    ]
+  },
+  {
+    code: "T31",
+    name: "Aero Country",
+    ground: "Aero Country Traffic",
+    tower: "Aero Country Traffic",
+    isTowered: false,
+    frequencies: {
+      tower: "122.9",
+      ground: "122.9",
+      atis: "NA",
+      ctaf: "122.9" // Same as tower for towered airports
+    },
+    runways: ["17", "35"],
+    aircraftLocations: ["North side of airport", "South side of airport", "North side of runway 18", "South side of runway 18", "North side of runway 36", "South side of runway 36"],
+    taxiways: [
+      "A"
     ]
   },
   { 

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Button, Typography, Grid, Box, Tabs, Tab } from "@mui/material";
+import { Button, Typography, Grid, Box, Tabs, Tab, Chip } from "@mui/material";
 import PhoneticText from "./PhoneticText";
 
-const TaxiClearance = ({ aircraftCallSign, groundStationCallSign, departureAirport, atisCode, runway, aircraftLocation }) => {
+const TaxiClearance = ({ aircraft, departureAirport, atisCode, runway, aircraftLocation }) => {
   const [taxiPath, setTaxiPath] = useState([]);
   const [showResponse, setShowResponse] = useState(false);
   const [organizedTaxiways, setOrganizedTaxiways] = useState({});
@@ -45,7 +45,7 @@ const TaxiClearance = ({ aircraftCallSign, groundStationCallSign, departureAirpo
     <Box>
       <Typography variant="h6">Check List</Typography>
       <ul>
-        <li>Check if the radio is on ground frequency</li>
+        <li>Check if the radio is on ground frequency {departureAirport.frequencies.ground}</li>
         <li>Check for the lights</li>
         <li>Ask ATC for clearance</li>
       </ul>
@@ -96,6 +96,23 @@ const TaxiClearance = ({ aircraftCallSign, groundStationCallSign, departureAirpo
         </Button>
       </Box>
 
+      {/* Displaying the taxi path with delete option using Tag */}
+      <Box sx={{ mt: 2 }}>
+        <Typography variant="h6">Taxi Path:</Typography>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+          {taxiPath.map((path, index) => (
+            <Chip
+              key={index}
+              label={path}
+              onDelete={() => setTaxiPath(taxiPath.filter((_, i) => i !== index))}
+              size="small"
+              sx={{ mb: 1 }}
+              color="primary"
+            />
+          ))}
+        </Box>
+      </Box>
+
       {showResponse && (
         <Box sx={{ p: 2, bgcolor: '#f0f7f0', borderRadius: 1 }}>
           <Typography variant="h6">Your Readback:</Typography>
@@ -107,7 +124,7 @@ const TaxiClearance = ({ aircraftCallSign, groundStationCallSign, departureAirpo
 
   const InitialCallMessage = () => (
     <Typography color="primary" sx={{ fontFamily: 'monospace' }}>
-      {groundStationCallSign}, {aircraftCallSign}, 
+      {departureAirport.ground}, {aircraft.callSign}, 
       at the {aircraftLocation} with information <PhoneticText text={atisCode} component="span" />, 
       request taxi for departure
     </Typography>
@@ -117,7 +134,7 @@ const TaxiClearance = ({ aircraftCallSign, groundStationCallSign, departureAirpo
     if (taxiPath.length === 0) return "";
     return (
       <>
-        {aircraftCallSign}, {groundStationCallSign}, 
+        {aircraft.callSign}, {departureAirport.ground}, 
         taxi to runway <PhoneticText text={runway} component="span" /> via{' '}
         {taxiPath.map((path, index) => (
           <React.Fragment key={path}>
@@ -132,7 +149,7 @@ const TaxiClearance = ({ aircraftCallSign, groundStationCallSign, departureAirpo
 
   const ReadbackMessage = () => (
     <Typography color="primary" sx={{ fontFamily: 'monospace' }}>
-      {groundStationCallSign},{aircraftCallSign} , 
+      
       taxi to runway <PhoneticText text={runway} component="span" /> via{' '}
       {taxiPath.map((path, index) => (
         <React.Fragment key={path}>
@@ -140,9 +157,11 @@ const TaxiClearance = ({ aircraftCallSign, groundStationCallSign, departureAirpo
           {index < taxiPath.length - 1 ? ', ' : ''}
         </React.Fragment>
       ))}, 
-      hold short of runway <PhoneticText text={runway} component="span" />
+      hold short of runway <PhoneticText text={runway} component="span" />  {aircraft.callSign} 
     </Typography>
   );
+
+  
 
   return (
     <Box sx={{ p: 2 }}>
