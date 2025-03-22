@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TextField, MenuItem, FormControl, InputLabel, Select, Grid, Typography } from "@mui/material";
+import {Box, TextField, MenuItem, FormControl, InputLabel, Select, Grid, Typography } from "@mui/material";
 
 const airports = [
   {
@@ -504,8 +504,6 @@ const FlightSetup = ({
 }) => {
   const [departure, setDeparture] = useState("KTKI");
   const [arrival, setArrival] = useState("");
-  const [departureGround, setDepartureGround] = useState("McKinney Ground");
-  const [departureTower, setDepartureTower] = useState("McKinney Tower");
   const [selectedDepartureAirport, setSelectedDepartureAirport] = useState(airports[0]);
   const [selectedArrivalAirport, setSelectedArrivalAirport] = useState(null);
   const [atisCode, setLocalAtisCode] = useState("");
@@ -525,9 +523,7 @@ const FlightSetup = ({
   const handleDepartureAirportChange = (event) => {
     const selected = airports.find((ap) => ap.code === event.target.value);
     setDeparture(selected.code);
-    setDepartureGround(selected.ground);
     setGroundStation(selected.ground);
-    setDepartureTower(selected.tower);
     setSelectedDepartureAirport(selected);
     setDepartureAirport(selected); // Passing the entire airport object
   };
@@ -558,7 +554,6 @@ const FlightSetup = ({
 
   return (
     <>
-      <h2>Flight Setup</h2>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <FormControl fullWidth>
@@ -657,6 +652,31 @@ const FlightSetup = ({
           />
         </Grid>
 
+           {/* Flight Parameters */}
+           <Grid item xs={12}>
+          <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>Flight Parameters</Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <FormControl fullWidth>
+            <InputLabel>Departure Runway</InputLabel>
+            <Select onChange={(e) => setRunway(e.target.value)}>
+              {selectedDepartureAirport?.runways.map((runway) => (
+                <MenuItem key={runway} value={runway}>{runway}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={6}>
+          <FormControl fullWidth>
+            <InputLabel>Cruising Altitude</InputLabel>
+            <Select onChange={(e) => setAltitude(e.target.value)}>
+              {[500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000].map((alt) => (
+                <MenuItem key={alt} value={alt}>{alt} feet</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+
         {/* Arrival Airport Section */}
         <Grid item xs={12}>
           <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>Arrival</Typography>
@@ -710,32 +730,9 @@ const FlightSetup = ({
           </>
         )}
 
-        {/* Flight Parameters */}
-        <Grid item xs={12}>
-          <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>Flight Parameters</Typography>
-        </Grid>
-        <Grid item xs={6}>
-          <FormControl fullWidth>
-            <InputLabel>Departure Runway</InputLabel>
-            <Select onChange={(e) => setRunway(e.target.value)}>
-              {selectedDepartureAirport?.runways.map((runway) => (
-                <MenuItem key={runway} value={runway}>{runway}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={6}>
-          <FormControl fullWidth>
-            <InputLabel>Cruising Altitude</InputLabel>
-            <Select onChange={(e) => setAltitude(e.target.value)}>
-              {[3000, 5000, 7000, 10000, 12000, 15000].map((alt) => (
-                <MenuItem key={alt} value={alt}>{alt} feet</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
+     
       </Grid>
-    </>
+      </>
   );
 };
 

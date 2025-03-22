@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Button, Typography, Grid, Box } from "@mui/material";
+import { Button, Typography, Grid, Box, Tabs, Tab } from "@mui/material";
 import PhoneticText from "./PhoneticText";
 
 const TaxiClearance = ({ aircraftCallSign, groundStationCallSign, departureAirport, atisCode, runway, aircraftLocation }) => {
   const [taxiPath, setTaxiPath] = useState([]);
   const [showResponse, setShowResponse] = useState(false);
   const [organizedTaxiways, setOrganizedTaxiways] = useState({});
+  const [tabIndex, setTabIndex] = useState(0);
 
   // Function to organize taxiways by their main letter
   const organizeTaxiways = () => {
@@ -36,55 +37,28 @@ const TaxiClearance = ({ aircraftCallSign, groundStationCallSign, departureAirpo
     setShowResponse(false);
   };
 
-  const InitialCallMessage = () => (
-    <Typography color="primary" sx={{ fontFamily: 'monospace' }}>
-      {groundStationCallSign}, {aircraftCallSign}, 
-      at the {aircraftLocation} with information <PhoneticText text={atisCode} component="span" />, 
-      request taxi for departure
-    </Typography>
-  );
-
-  const generateTaxiResponse = () => {
-    if (taxiPath.length === 0) return "";
-    return (
-      <>
-        {aircraftCallSign}, {groundStationCallSign}, 
-        taxi to runway <PhoneticText text={runway} component="span" /> via{' '}
-        {taxiPath.map((path, index) => (
-          <React.Fragment key={path}>
-            <PhoneticText text={path} component="span" />
-            {index < taxiPath.length - 1 ? ' ' : ''}
-          </React.Fragment>
-        ))}, 
-        hold short of runway <PhoneticText text={runway} component="span" />
-      </>
-    );
+  const handleTabChange = (event, newValue) => {
+    setTabIndex(newValue);
   };
 
-  const ReadbackMessage = () => (
-    <Typography color="primary" sx={{ fontFamily: 'monospace' }}>
-      {groundStationCallSign},{aircraftCallSign} , 
-      taxi to runway <PhoneticText text={runway} component="span" /> via{' '}
-      {taxiPath.map((path, index) => (
-        <React.Fragment key={path}>
-          <PhoneticText text={path} component="span" />
-          {index < taxiPath.length - 1 ? ' ' : ''}
-        </React.Fragment>
-      ))}, 
-      hold short of runway <PhoneticText text={runway} component="span" />
-    </Typography>
+  const CheckListContent = () => (
+    <Box>
+      <Typography variant="h6">Check List</Typography>
+      <ul>
+        <li>Check if the radio is on ground frequency</li>
+        <li>Check for the lights</li>
+        <li>Ask ATC for clearance</li>
+      </ul>
+    </Box>
   );
 
-  return (
-    <Box sx={{ p: 2 }}>
-      <h2>Taxi Clearance</h2>
-      
+  const ATCCommsContent = () => (
+    <Box>
+      <Typography variant="h6">ATC Comms</Typography>
       <Box sx={{ mb: 3, p: 2, bgcolor: '#f5f5f5', borderRadius: 1 }}>
         <Typography variant="h6">Initial Call:</Typography>
         <InitialCallMessage />
       </Box>
-
-      
       {/* Organized Taxiway Buttons */}
       {Object.entries(organizedTaxiways).map(([mainLetter, routes]) => (
         <Box key={mainLetter} sx={{ mb: 2 }}>
@@ -123,31 +97,62 @@ const TaxiClearance = ({ aircraftCallSign, groundStationCallSign, departureAirpo
       </Box>
 
       {showResponse && (
-        <>
-          <Box sx={{ mb: 3, p: 2, bgcolor: '#e3f2fd', borderRadius: 1 }}>
-            <Typography color="primary" sx={{ fontFamily: 'monospace' }}>
-              {taxiPath.map((path, index) => (
-                <React.Fragment key={path}>
-                  {path}
-                  {index < taxiPath.length - 1 ? ' → ' : ''}
-                </React.Fragment>
-              ))}
-            </Typography>
-          </Box>
-
-          {/* <Box sx={{ mb: 3, p: 2, bgcolor: '#e3f2fd', borderRadius: 1 }}>
-            <Typography variant="h6">Ground Response:</Typography>
-            <Typography color="primary" sx={{ fontFamily: 'monospace' }}>
-              {generateTaxiResponse()}
-            </Typography>
-          </Box> */}
-
-          <Box sx={{ p: 2, bgcolor: '#f0f7f0', borderRadius: 1 }}>
-            <Typography variant="h6">Your Readback:</Typography>
-            <ReadbackMessage />
-          </Box>
-        </>
+        <Box sx={{ p: 2, bgcolor: '#f0f7f0', borderRadius: 1 }}>
+          <Typography variant="h6">Your Readback:</Typography>
+          <ReadbackMessage />
+        </Box>
       )}
+    </Box>
+  );
+
+  const InitialCallMessage = () => (
+    <Typography color="primary" sx={{ fontFamily: 'monospace' }}>
+      {groundStationCallSign}, {aircraftCallSign}, 
+      at the {aircraftLocation} with information <PhoneticText text={atisCode} component="span" />, 
+      request taxi for departure
+    </Typography>
+  );
+
+  const generateTaxiResponse = () => {
+    if (taxiPath.length === 0) return "";
+    return (
+      <>
+        {aircraftCallSign}, {groundStationCallSign}, 
+        taxi to runway <PhoneticText text={runway} component="span" /> via{' '}
+        {taxiPath.map((path, index) => (
+          <React.Fragment key={path}>
+            <PhoneticText text={path} component="span" />
+            {index < taxiPath.length - 1 ? ' ' : ''}
+          </React.Fragment>
+        ))}, 
+        hold short of runway <PhoneticText text={runway} component="span" />
+      </>
+    );
+  };
+
+  const ReadbackMessage = () => (
+    <Typography color="primary" sx={{ fontFamily: 'monospace' }}>
+      {groundStationCallSign},{aircraftCallSign} , 
+      taxi to runway <PhoneticText text={runway} component="span" /> via{' '}
+      {taxiPath.map((path, index) => (
+        <React.Fragment key={path}>
+          <PhoneticText text={path} component="span" />
+          {index < taxiPath.length - 1 ? ', ' : ''}
+        </React.Fragment>
+      ))}, 
+      hold short of runway <PhoneticText text={runway} component="span" />
+    </Typography>
+  );
+
+  return (
+    <Box sx={{ p: 2 }}>
+     
+      <Tabs value={tabIndex} onChange={handleTabChange}>
+        <Tab label="Check List" />
+        <Tab label="ATC" />
+      </Tabs>
+      {tabIndex === 0 && <CheckListContent />}
+      {tabIndex === 1 && <ATCCommsContent />}
     </Box>
   );
 };

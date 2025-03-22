@@ -5,6 +5,11 @@ import FlightSetup from "./components/FlightSetup";
 import TaxiClearance from "./components/TaxiClearance";
 import BeforeDeparture from "./components/BeforeDeparture";
 import Climb from "./components/Climb";
+import Cruise from "./components/Cruise";
+import Approach from "./components/Approach";
+import TrafficPattern from "./components/TrafficPattern";
+import Landing from "./components/Landing";
+import AfterLanding from "./components/AfterLanding";
 
 function App() {
   const [aircraft, setAircraft] = useState(null);
@@ -64,6 +69,21 @@ function App() {
           arrivalAirport={arrivalAirport}
         />
       )
+    },
+    {
+      component: <Cruise />
+    },
+    {
+      component: <Approach />
+    },
+    {
+      component: <TrafficPattern />
+    },
+    {
+      component: <Landing />
+    },
+    {
+      component: <AfterLanding />
     }
   ];
 
@@ -78,23 +98,21 @@ function App() {
   const toggleDrawer = (open) => () => {
     setDrawerOpen(open);
   };
+  const phaseToStepMap = {
+    "Flight Setup": 0,
+    "Taxi Clearance": 1,
+    "Before Departure": 2,
+    "Climb": 3,
+    "Cruise": 4,
+    "Approach": 5,
+    "Traffic Pattern": 6,
+    "Landing": 7,
+    "After Landing": 8
+  };
 
   const handlePhaseSelect = (phase) => {
     setSelectedPhase(phase);
     setDrawerOpen(false);
-    
-    const phaseToStepMap = {
-      "Flight Setup": 0,
-      "Taxi": 1,
-      "Before Departure": 2,
-      "Climb": 3,
-      "Cruise": 4,
-      "Approach": 5,
-      "Traffic Pattern": 6,
-      "Landing": 7,
-      "After Landing": 8
-    };
-
     setCurrentStep(phaseToStepMap[phase] || 0);
   };
 
@@ -105,7 +123,7 @@ function App() {
           <IconButton edge="start" color="inherit" onClick={toggleDrawer(true)}>
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6">Pilot ATC Assistant</Typography>
+          <Typography variant="h6"> {selectedPhase}</Typography>
         </Toolbar>
       </AppBar>
       <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
@@ -115,14 +133,14 @@ function App() {
           onClick={toggleDrawer(false)}
           onKeyDown={toggleDrawer(false)}
         >
-          {["Flight Setup", "Taxi", "Before Departure", "Climb", "Cruise", "Approach", "Traffic Pattern", "Landing", "After Landing"].map((phase) => (
+          { ["Flight Setup", "Taxi Clearance", "Before Departure", "Climb", "Cruise", "Approach", "Traffic Pattern", "Landing", "After Landing"].map((phase) => (
             <MenuItem key={phase} onClick={() => handlePhaseSelect(phase)}>
               {phase}
             </MenuItem>
           ))}
         </Box>
       </Drawer>
-      <Container>
+      <Container sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
         {steps[currentStep].component}
         
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3, mb: 3 }}>
