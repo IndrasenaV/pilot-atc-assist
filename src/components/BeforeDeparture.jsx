@@ -82,9 +82,9 @@ const BeforeDeparture = ({ aircraft, runway , departureAirport}) => {
           {towerResponse && (
             <Typography variant="body1" sx={{ fontStyle: 'italic' }}>
               {towerResponse === "cleared" ? (
-                `"${aircraft.callSign}, ${departureAirport.tower}, cleared for takeoff Runway ${runway}"`
+                `cleared for takeoff Runway ${runway} , ${aircraft.shortCallSign}`
               ) : (
-                `"${aircraft.callSign}, ${departureAirport.tower}, hold short Runway ${runway}"`
+                `${departureAirport.tower}, hold short Runway ${runway} , ${aircraft.shortCallSign}`
               )}
              
             </Typography>

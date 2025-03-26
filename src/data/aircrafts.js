@@ -1,6 +1,7 @@
 const aircrafts = [
   {
     callSign: "Cessna 739TS",
+    shortCallSign: "9TS",
     type: "C172",
     vSpeeds: {
       vR: 55, // Rotation speed
@@ -19,6 +20,7 @@ const aircrafts = [
   },
   { 
     callSign: "Cessna 20015",
+    shortCallSign: "015",
     type: "C172",
     vSpeeds: {
       vR: 55,
@@ -37,6 +39,7 @@ const aircrafts = [
   },
   { 
     callSign: "Cessna 734BU",
+    shortCallSign: "4BU",
     type: "C172",
     vSpeeds: {
       vR: 55,
@@ -54,6 +57,7 @@ const aircrafts = [
     }
   },
   { callSign: "Cessna 73910",
+    shortCallSign: "910",
     type: "C172",
     vSpeeds: {
       vR: 55,
@@ -70,6 +74,7 @@ const aircrafts = [
       finalApproach: 65
     } },
   { callSign: "Cessna 734PU",
+    shortCallSign: "4PU",
     type: "C172",
     vSpeeds: {
       vR: 55,
@@ -86,6 +91,7 @@ const aircrafts = [
       finalApproach: 65
     } },
   { callSign: "Cessna 9469H",
+    shortCallSign: "69H",
     type: "C172",
     vSpeeds: {
       vR: 55,
@@ -119,6 +125,7 @@ const aircrafts = [
     } },
   { 
     callSign: "Diamond 33779",
+    shortCallSign: "779",
     type: "DA40",
     vSpeeds: {
       vR: 57, // Rotation speed

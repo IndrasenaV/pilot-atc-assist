@@ -3,7 +3,7 @@ import { Button, Typography, Grid, Box, Tabs, Tab, Chip } from "@mui/material";
 import PhoneticText from "./PhoneticText";
 import CheckIcon from '@mui/icons-material/Check';
 
-const TaxiClearance = ({ aircraft, departureAirport, atisCode, runway, aircraftLocation }) => {
+const TaxiClearance = ({ aircraft, departureAirport, atisCode, runway, aircraftLocation, departureDirection }) => {
   const [taxiPath, setTaxiPath] = useState([]);
   const [showResponse, setShowResponse] = useState(false);
   const [organizedTaxiways, setOrganizedTaxiways] = useState({});
@@ -142,7 +142,7 @@ const TaxiClearance = ({ aircraft, departureAirport, atisCode, runway, aircraftL
     <Typography color="primary" sx={{ fontFamily: 'monospace' }}>
       {departureAirport.ground}, {aircraft.callSign}, 
       at the {aircraftLocation} with information <PhoneticText text={atisCode} component="span" />, 
-      request taxi for departure
+      request taxi for departure to {departureDirection}
     </Typography>
   );
 
@@ -173,7 +173,7 @@ const TaxiClearance = ({ aircraft, departureAirport, atisCode, runway, aircraftL
           {index < taxiPath.length - 1 ? ', ' : ''}
         </React.Fragment>
       ))}, 
-      hold short of runway <PhoneticText text={runway} component="span" />  {aircraft.callSign} 
+      hold short of runway <PhoneticText text={runway} component="span" />,  {aircraft.shortCallSign} 
     </Typography>
   );
 

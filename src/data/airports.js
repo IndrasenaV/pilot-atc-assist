@@ -12,7 +12,7 @@ const airports = [
       ctaf: "118.825" // Same as tower for towered airports
     },
     runways: ["18", "36"],
-    aircraftLocations: ["North side of airport", "South side of airport", "North side of runway 18", "South side of runway 18", "North side of runway 36", "South side of runway 36"],
+    aircraftLocations: ["North tiedowns", "South side of airport", "North side of runway 18", "South side of runway 18", "North side of runway 36", "South side of runway 36"],
     taxiways: [
       "A", "A1", "A2", "A3", "A4", "A5", "A6",
       "B", "B1", "B2", "B3", "B4", "B5", "B6",

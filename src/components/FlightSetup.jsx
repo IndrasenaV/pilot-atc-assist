@@ -8,6 +8,8 @@ const FlightSetup = ({
   aircraft,
   setDepartureRunway,
   departureRunway,
+  setDepartureDirection,
+  departureDirection,
   setAltitude,
   altitude,
   setDepartureAirport,
@@ -18,6 +20,8 @@ const FlightSetup = ({
   atisCode,
   setAircraftLocation,
   aircraftLocation,
+  setFlightIntention,
+  flightIntention,
 }) => {
 
 
@@ -76,6 +80,40 @@ const FlightSetup = ({
               {departureAirport?.aircraftLocations?.map((location) => (
                 <MenuItem key={location} value={location}>
                   {location}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+
+        {/* Add this new section for direction selection after aircraft location */}
+        <Grid item xs={12}>
+          <FormControl fullWidth>
+            <InputLabel>Departure Direction</InputLabel>
+            <Select
+              value={departureDirection}
+              onChange={(e) => setDepartureDirection(e.target.value)}
+            >
+              {['North', 'North West', 'West', 'South West', 'South', 'South East', 'East', 'North East'].map((direction) => (
+                <MenuItem key={direction} value={direction}>
+                  {direction}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+
+        {/* Add this new section for flight intentions after departure direction */}
+        <Grid item xs={12}>
+          <FormControl fullWidth>
+            <InputLabel>Flight Intention</InputLabel>
+            <Select
+              value={flightIntention}
+              onChange={(e) => setFlightIntention(e.target.value)}
+            >
+              {['Landing', 'Touch and Go', 'Go Around', 'Cruise', 'Approach'].map((intention) => (
+                <MenuItem key={intention} value={intention}>
+                  {intention}
                 </MenuItem>
               ))}
             </Select>

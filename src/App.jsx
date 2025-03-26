@@ -26,9 +26,7 @@ function App() {
   const [aircraftLocation, setAircraftLocation] = useState(airport.aircraftLocations[0]);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedPhase, setSelectedPhase] = useState("Flight Setup");
-  const [distanceToAirport, setDistanceToAirport] = useState(14);
-  const [destinationFrequency, setDestinationFrequency] = useState("");
-
+  const [departureDirection, setDepartureDirection] = useState("East");
   const steps = [
     {
       component: (
@@ -47,6 +45,8 @@ function App() {
           atisCode={atisCode}
           setAircraftLocation={setAircraftLocation}
           aircraftLocation={aircraftLocation}
+          setDepartureDirection={setDepartureDirection}
+          departureDirection={departureDirection}
         />
       )
     },
@@ -58,6 +58,7 @@ function App() {
           atisCode={atisCode}
           runway={departureRunway}
           aircraftLocation={aircraftLocation}
+          departureDirection={departureDirection}
         />
       )
     },

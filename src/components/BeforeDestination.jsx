@@ -3,8 +3,9 @@ import { Tabs, Tab, Box, Typography, Button, Select, MenuItem, FormControl, Inpu
 
 const BeforeDestination = ({ aircraft, arrivalAirport }) => {
   const [value, setValue] = useState(0);
-  const [distance, setDistance] = useState(10);
+  const [distance, setDistance] = useState(13);
   const [direction, setDirection] = useState('');
+  const [intention, setIntention] = useState('landing');
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -14,11 +15,15 @@ const BeforeDestination = ({ aircraft, arrivalAirport }) => {
     setDistance(event.target.value);
   };
 
+  const handleIntentionChange = (event) => {
+    setIntention(event.target.value);
+  };
+
   const handleDirectionClick = (dir) => {
     setDirection(dir);
   };
 
-  const atcCall = `${arrivalAirport.tower}, ${aircraft.callSign}, ${distance} miles to the ${direction}, inbound for landing.`;
+  const atcCall = `${arrivalAirport.tower}, ${aircraft.callSign}, ${distance} miles to the ${direction}, inbound for ${intention}.`;
 
   return (
     <Box>
@@ -31,12 +36,17 @@ const BeforeDestination = ({ aircraft, arrivalAirport }) => {
           <List>
             <ListItem>
               <Typography>
-                Ensure you are near 10-15 miles from the destination airport 
+                Ensure you are near 11-15 miles from the destination airport 
               </Typography>
             </ListItem>
             <ListItem>
               <Typography>
                 Ensure you have set the frequency to the destination airport frequency of {arrivalAirport.frequencies.tower}
+              </Typography>
+            </ListItem>
+            <ListItem>
+              <Typography>
+                Call ATC for arrival clearance
               </Typography>
             </ListItem>
           </List>
@@ -53,11 +63,18 @@ const BeforeDestination = ({ aircraft, arrivalAirport }) => {
               ))}
             </Select>
           </FormControl>
+          <FormControl fullWidth mt={2}>
+            <InputLabel>Intention</InputLabel>
+            <Select value={intention} onChange={handleIntentionChange}>
+              <MenuItem value="landing">Landing</MenuItem>
+              <MenuItem value="touch and go">Touch and Go</MenuItem>
+            </Select>
+          </FormControl>
           <Box display="flex" justifyContent="center" mt={2} position="relative" width="200px" height="200px">
             {['E', 'SE', 'S', 'SW', 'W', 'NW', 'N', 'NE'].map((dir, index) => {
-              const angle = (index / 8) * 2 * Math.PI; // Calculate angle for circular layout
-              const x = 100 + 80 * Math.cos(angle); // X position
-              const y = 100 + 80 * Math.sin(angle); // Y position
+              const angle = (index / 8) * 2 * Math.PI;
+              const x = 100 + 80 * Math.cos(angle);
+              const y = 100 + 80 * Math.sin(angle);
               return (
                 <Button
                   key={dir}
@@ -67,7 +84,7 @@ const BeforeDestination = ({ aircraft, arrivalAirport }) => {
                     position: 'absolute',
                     left: `${x}px`,
                     top: `${y}px`,
-                    transform: 'translate(-50%, -50%)', // Center the button
+                    transform: 'translate(-50%, -50%)',
                   }}
                 >
                   {dir}
