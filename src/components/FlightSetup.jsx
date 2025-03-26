@@ -103,22 +103,6 @@ const FlightSetup = ({
           </FormControl>
         </Grid>
 
-        {/* Add this new section for flight intentions after departure direction */}
-        <Grid item xs={12}>
-          <FormControl fullWidth>
-            <InputLabel>Flight Intention</InputLabel>
-            <Select
-              value={flightIntention}
-              onChange={(e) => setFlightIntention(e.target.value)}
-            >
-              {['Landing', 'Touch and Go', 'Go Around', 'Cruise', 'Approach'].map((intention) => (
-                <MenuItem key={intention} value={intention}>
-                  {intention}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
 
         {/* Departure Airport Section */}
         <Grid item xs={12}>
