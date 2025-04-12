@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Tabs, Tab, Box, Typography, Button, Select, MenuItem, FormControl, InputLabel, List, ListItem } from '@mui/material';
 
-const BeforeDestination = ({ aircraft, arrivalAirport }) => {
+const PatternDestination = ({ aircraft, arrivalAirport , arrivalRunway}) => {
   const [value, setValue] = useState(0);
   const [distance, setDistance] = useState(13);
   const [direction, setDirection] = useState('');
@@ -23,9 +23,28 @@ const BeforeDestination = ({ aircraft, arrivalAirport }) => {
     setDirection(dir);
   };
 
-  const atcCall = arrivalAirport.tower 
-    ? `${arrivalAirport.tower}, ${aircraft.callSign}, ${distance} miles to the ${direction}, inbound for ${intention}.`
-    : `${arrivalAirport.tower}, ${aircraft.callSign}, ${distance} miles to the ${direction}, inbound for ${intention} ,  ${arrivalAirport.tower}.`;
+  const generateATCCalls = (isTowered) => {
+    if (isTowered) {
+      return {
+        enteringPattern: `${aircraft.callSign}, entering the pattern for ${intention}, ${arrivalAirport.tower}.`,
+        downwind: `${aircraft.callSign}, on downwind for runway, ${intention}, ${arrivalAirport.tower}.`,
+        base: `${aircraft.callSign}, turning base for runway, ${intention}, ${arrivalAirport.tower}.`,
+        final: `${aircraft.callSign}, on final for runway, ${intention}, ${arrivalAirport.tower}.`,
+        afterLanding: `${aircraft.callSign}, clear of the runway, ${arrivalAirport.tower}.`,
+      };
+    } else {
+      return {
+        enteringPattern: `${arrivalAirport.tower} , ${aircraft.callSign}, entering the pattern for ${intention} ${arrivalAirport.tower}.`,
+        downwind: `${arrivalAirport.tower} , ${aircraft.callSign}, on downwind for runway ${arrivalRunway} , for ${intention} ${arrivalAirport.tower}.`,
+        base: `${arrivalAirport.tower} , ${aircraft.callSign}, turning base for runway ${arrivalRunway} , for ${intention} ${arrivalAirport.tower}.`,
+        final: `${arrivalAirport.tower} , ${aircraft.callSign}, on final for runway ${arrivalRunway} , for ${intention} ${arrivalAirport.tower}.`,
+        afterLanding: `${arrivalAirport.tower} , ${aircraft.callSign}, clear of the runway ${arrivalRunway} ${arrivalAirport.tower}.`,
+      };
+    }
+  };
+
+
+  const atcCalls = generateATCCalls(arrivalAirport.isTowered);
 
   return (
     <Box>
@@ -95,9 +114,13 @@ const BeforeDestination = ({ aircraft, arrivalAirport }) => {
             })}
           </Box>
           {direction && (
-            <Typography mt={2}>
-              {atcCall}
-            </Typography>
+            <Box mt={2}>
+              <Typography>{atcCalls.enteringPattern}</Typography>
+              <Typography>{atcCalls.downwind}</Typography>
+              <Typography>{atcCalls.base}</Typography>
+              <Typography>{atcCalls.final}</Typography>
+              <Typography>{atcCalls.afterLanding}</Typography>
+            </Box>
           )}
         </Box>
       )}
@@ -105,4 +128,4 @@ const BeforeDestination = ({ aircraft, arrivalAirport }) => {
   );
 };
 
-export default BeforeDestination; 
+export default PatternDestination; 

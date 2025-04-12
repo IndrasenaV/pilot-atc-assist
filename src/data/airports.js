@@ -38,6 +38,24 @@ const airports = [
       "A"
     ]
   },
+  {
+    code: "7F3",
+    name: "Caddo Mills Municipal",
+    ground: "Caddo Mills Municipal Traffic",
+    tower: "Caddo Mills Municipal Traffic",
+    isTowered: false,
+    frequencies: {
+      tower: "122.8",
+      ground: "122.8",
+      atis: "NA",
+      ctaf: "122.8" // Same as tower for towered airports
+    },
+    runways: ["13", "31", "18", "36"],
+    aircraftLocations: ["North side of airport", "South side of airport", "North side of runway 18", "South side of runway 18", "North side of runway 36", "South side of runway 36"],
+    taxiways: [
+      "A"
+    ]
+  },
   { 
     code: "KDFW", 
     name: "Dallas/Fort Worth International",

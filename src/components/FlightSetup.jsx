@@ -8,6 +8,8 @@ const FlightSetup = ({
   aircraft,
   setDepartureRunway,
   departureRunway,
+  setArrivalRunway,
+  arrivalRunway,
   setDepartureDirection,
   departureDirection,
   setAltitude,
@@ -20,8 +22,6 @@ const FlightSetup = ({
   atisCode,
   setAircraftLocation,
   aircraftLocation,
-  setFlightIntention,
-  flightIntention,
 }) => {
 
 
@@ -86,22 +86,7 @@ const FlightSetup = ({
           </FormControl>
         </Grid>
 
-        {/* Add this new section for direction selection after aircraft location */}
-        <Grid item xs={12}>
-          <FormControl fullWidth>
-            <InputLabel>Departure Direction</InputLabel>
-            <Select
-              value={departureDirection}
-              onChange={(e) => setDepartureDirection(e.target.value)}
-            >
-              {['North', 'North West', 'West', 'South West', 'South', 'South East', 'East', 'North East'].map((direction) => (
-                <MenuItem key={direction} value={direction}>
-                  {direction}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
+     
 
 
         {/* Departure Airport Section */}
@@ -152,6 +137,22 @@ const FlightSetup = ({
             disabled
           />
         </Grid>
+           {/* Add this new section for direction selection after aircraft location */}
+           <Grid item xs={12}>
+          <FormControl fullWidth>
+            <InputLabel>Departure Direction</InputLabel>
+            <Select
+              value={departureDirection}
+              onChange={(e) => setDepartureDirection(e.target.value)}
+            >
+              {['North', 'North West', 'West', 'South West', 'South', 'South East', 'East', 'North East'].map((direction) => (
+                <MenuItem key={direction} value={direction}>
+                  {direction}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
 
         {/* Modified ATIS Code section */}
         <Grid item xs={12}>
@@ -167,10 +168,6 @@ const FlightSetup = ({
           />
         </Grid>
 
-        {/* Flight Parameters */}
-        <Grid item xs={12}>
-          <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>Flight Parameters</Typography>
-        </Grid>
         <Grid item xs={6}>
           <FormControl fullWidth>
             <InputLabel>Departure Runway</InputLabel>
@@ -242,7 +239,18 @@ const FlightSetup = ({
                 disabled
               />
             </Grid>
+            <Grid item xs={6}>
+          <FormControl fullWidth>
+            <InputLabel>Arrival Runway</InputLabel>
+            <Select onChange={(e) => setArrivalRunway(e.target.value)} value={arrivalRunway }>
+              {arrivalAirport?.runways.map((runway) => (
+                <MenuItem key={runway} value={runway}>{runway}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
           </>
+          
         )}
 
 

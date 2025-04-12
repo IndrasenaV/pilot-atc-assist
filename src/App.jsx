@@ -11,6 +11,7 @@ import TrafficPattern from "./components/TrafficPattern";
 import Landing from "./components/Landing";
 import AfterLanding from "./components/AfterLanding";
 import BeforeDestination from "./components/BeforeDestination";
+import PatternDestination from "./components/PatternDestination";
 import airports from './data/airports'; // Import airports
 import aircrafts from './data/aircrafts'; 
 
@@ -18,6 +19,7 @@ function App() {
   let airport = airports[0];
   const [aircraft, setAircraft] = useState(aircrafts[0]);
   const [departureRunway, setDepartureRunway] = useState(airport.runways[0]);
+  const [arrivalRunway, setArrivalRunway] = useState(airport.runways[0]);
   const [altitude, setAltitude] = useState(2000);
   const [departureAirport, setDepartureAirport] = useState(airport);
   const [arrivalAirport, setArrivalAirport] = useState(airport);
@@ -47,6 +49,8 @@ function App() {
           aircraftLocation={aircraftLocation}
           setDepartureDirection={setDepartureDirection}
           departureDirection={departureDirection}
+          setArrivalRunway={setArrivalRunway}
+          arrivalRunway={arrivalRunway}
         />
       )
     },
@@ -93,7 +97,10 @@ function App() {
       )
     },
     {
-      component: <TrafficPattern />
+      component: <PatternDestination   aircraft={aircraft} 
+      arrivalAirport={arrivalAirport} 
+      arrivalRunway={arrivalRunway}
+      />
     },
     {
       component: <Approach />
